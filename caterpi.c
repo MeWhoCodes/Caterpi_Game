@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define spd 20
-#define sz  20
+#define spd 25
+#define sz  30
 
 int main() {
     SetConsoleOutputCP(65001); // for emojis;

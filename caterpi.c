@@ -50,10 +50,14 @@ int main() {
     // int by = 0;
 
     struct seg Arr_seg[sz*sz];
-    int Arr_len_inUse = 1; 
+    int Arr_len_inUse = 2; 
     Arr_seg[0].key = key;
     Arr_seg[0].x = 0;
     Arr_seg[0].y = 0;
+
+    Arr_seg[1].key = key;
+    Arr_seg[1].x = 0;
+    Arr_seg[1].y = 1;
     
 
     char *str= malloc(buf_sz);
@@ -65,23 +69,45 @@ int main() {
             key = getch();
         }
 
-        for (int i = Arr_len_inUse - 1; i > 0; i--) { //fill what key needs to be used for each segment's movement
-            Arr_seg[i].key = Arr_seg[i - 1].key;
+
+
+
+
+
+        for (int i = Arr_len_inUse - 1; i > 0; i--) {
+            Arr_seg[i].x = Arr_seg[i - 1].x;
+            Arr_seg[i].y = Arr_seg[i - 1].y;
         }
         Arr_seg[0].key = key;
+
+
+
+
+
+
         
         str[0] = '\0';
         char *pointr = str;
         
-        if(key == 'w') by = by - 1; 
-        if(key == 's') by = by + 1; 
-        if(key == 'a') bx = bx - 1; 
-        if(key == 'd') bx = bx + 1;
+        // if(key == 'w') by = by - 1; 
+        // if(key == 's') by = by + 1; 
+        // if(key == 'a') bx = bx - 1; 
+        // if(key == 'd') bx = bx + 1;
 
-        if (bx < 0) bx = sz - 1;
-        if (bx >= sz) bx = 0;
-        if (by < 0) by = sz - 1;
-        if (by >= sz) by = 0;
+        // if (bx < 0) bx = sz - 1;
+        // if (bx >= sz) bx = 0;
+        // if (by < 0) by = sz - 1;
+        // if (by >= sz) by = 0;
+        
+        if(Arr_seg[0].key == 'w') Arr_seg[0].y = Arr_seg[0].y - 1; 
+        if(Arr_seg[0].key == 's') Arr_seg[0].y = Arr_seg[0].y + 1; 
+        if(Arr_seg[0].key == 'a') Arr_seg[0].x = Arr_seg[0].x - 1; 
+        if(Arr_seg[0].key == 'd') Arr_seg[0].x = Arr_seg[0].x + 1;
+        if (Arr_seg[0].x < 0) Arr_seg[0].x = sz - 1;
+        if (Arr_seg[0].x >= sz) Arr_seg[0].x = 0;
+        if (Arr_seg[0].y < 0) Arr_seg[0].y = sz - 1;
+        if (Arr_seg[0].y >= sz) Arr_seg[0].y = 0;
+        
 
 
         if(key == '0')
@@ -99,7 +125,7 @@ int main() {
                 //     strcat(pointr,"\xE2\xAC\x9C");
                 //     pointr += 3;
                 // }
-                if(disp_segs(&Arr_seg,Arr_len_inUse,x,y)){
+                if(disp_segs(Arr_seg,Arr_len_inUse,x,y)){
                     strcpy(pointr,"\xE2\xAC\x9B");
                     pointr += 3;
 

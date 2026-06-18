@@ -5,8 +5,8 @@
     #include <stdlib.h>
     #include <time.h>
 
-    #define spd 10
-    #define sz  40
+    #define spd 30
+    #define sz  45
 
     //-----------------------Segment struct and its related functions-----------------
 
@@ -62,9 +62,11 @@
         }
     }
     int is_eaten_tail(struct Seg *Aseg, struct Food *fd,int fxx, int fyy, int idx){
+        if(fxx == -1 && fyy == -1) return 0;
         if(Aseg[idx].x == fyy && Aseg[idx].y == fxx){
             fd->onTail = 1;
         }
+        return 0;
     }
 
 
@@ -166,7 +168,7 @@
 
             is_eaten_tail(Arr_seg, &food,fxx,fyy,Arr_len_inUse-1);
             if(food.onTail){
-                create_seg(Arr_seg, &Arr_len_inUse, fxx,fyy);
+                create_seg(Arr_seg, &Arr_len_inUse, fyy,fxx);
                 food.onTail = 0;
                 fxx = -1;
                 fyy = -1;

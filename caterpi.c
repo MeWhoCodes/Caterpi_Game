@@ -42,7 +42,7 @@
 
 
     void gen_food(struct Seg *Aseg, struct Food *fd, int len,int siz){
-        srand(time(NULL));
+        
         int fx = (rand() % siz);
         int fy = (rand() % siz);
         fd->x =fx;
@@ -71,6 +71,7 @@
 
 
     int main() {//---------------------------------------------------------------------
+        srand(time(NULL));
         SetConsoleOutputCP(65001); // for emojis;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_CURSOR_INFO curs_info;
@@ -112,8 +113,8 @@
         char *str= malloc(buf_sz);
 
 
-        int fxx = sz;
-        int fyy = sz;
+        int fxx = -1;
+        int fyy = -1;
         while(!exitas){
             Sleep(1000/spd);
 
@@ -167,6 +168,8 @@
             if(food.onTail){
                 create_seg(Arr_seg, &Arr_len_inUse, fxx,fyy);
                 food.onTail = 0;
+                fxx = -1;
+                fyy = -1;
             }
             
 

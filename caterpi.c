@@ -143,6 +143,7 @@ int main() {//------------------------------------------------------------------
         if (Arr_seg[0].y < 0) Arr_seg[0].y = sz - 1;
         if (Arr_seg[0].y >= sz) Arr_seg[0].y = 0;
 
+        is_eaten(Arr_seg,&food,Arr_len_inUse);
         if(food.isEaten){
             create_seg(Arr_seg,&Arr_len_inUse,food.x,food.y);
             gen_food(Arr_seg,&food,Arr_len_inUse,sz);
@@ -162,11 +163,11 @@ int main() {//------------------------------------------------------------------
                 if(disp_segs(Arr_seg,Arr_len_inUse,x,y)){
                     strcpy(pointr,"\xE2\xAC\x9B"); //
                     pointr += 3;
-                }else if(fx == x && fy == y){
+                }else if(food.x == x && food.y == y){
                     strcpy(pointr,"\xE2\xAD\x90");
                     pointr += 3;
                 }else{
-                    strcat(pointr,"\xE2\xAC\x9C");
+                    strcpy(pointr,"\xE2\xAC\x9C");
                     pointr += 3;
                 }
             }

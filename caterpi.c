@@ -4,23 +4,23 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define spd 25
-#define sz  30
+#define spd 10
+#define sz  40
 
 
-struct seg{
+struct Seg{
     char key;
     int x;
     int y;
 };
 
-void create_seg(struct seg *Aseg,int *len, int sx, int sy){
-    struct seg new_seg = {'_',sx,sy};
+void create_seg(struct Seg *Aseg,int *len, int sx, int sy){
+    struct Seg new_seg = {'_',sx,sy};
     Aseg[*len] = new_seg;
     *len = *len +1;
 }
 
-int disp_segs(struct seg *Aseg,int len, int x, int y){
+int disp_segs(struct Seg *Aseg,int len, int x, int y){
     for(int i=0;i<len;i++){
         if(Aseg[i].x == y && Aseg[i].y == x){
             return 1;
@@ -28,6 +28,15 @@ int disp_segs(struct seg *Aseg,int len, int x, int y){
     }
     return 0;
 }
+
+
+struct Food{
+    int x;
+    int y;
+    int isEater;
+};
+
+
 
 
 int main() {
@@ -49,8 +58,8 @@ int main() {
     // int bx=0;
     // int by = 0;
 
-    struct seg Arr_seg[sz*sz];
-    int Arr_len_inUse = 2; 
+    struct Seg Arr_seg[sz*sz];
+    int Arr_len_inUse = 3; 
     Arr_seg[0].key = key;
     Arr_seg[0].x = 0;
     Arr_seg[0].y = 0;
@@ -58,6 +67,10 @@ int main() {
     Arr_seg[1].key = key;
     Arr_seg[1].x = 0;
     Arr_seg[1].y = 1;
+
+    Arr_seg[2].key = key;
+    Arr_seg[2].x = 0;
+    Arr_seg[2].y = 2;
     
 
     char *str= malloc(buf_sz);
@@ -126,7 +139,7 @@ int main() {
                 //     pointr += 3;
                 // }
                 if(disp_segs(Arr_seg,Arr_len_inUse,x,y)){
-                    strcpy(pointr,"\xE2\xAC\x9B");
+                    strcpy(pointr,"\xE2\xAC\x9B"); //
                     pointr += 3;
 
                 }else{

@@ -3,10 +3,12 @@
 #include <conio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define spd 10
 #define sz  40
 
+//-----------------------Segment struct and its related functions-----------------
 
 struct Seg{
     char key;
@@ -29,17 +31,40 @@ int disp_segs(struct Seg *Aseg,int len, int x, int y){
     return 0;
 }
 
-
+//---------------------------Food struct and its related fucntions------------------------
 struct Food{
     int x;
     int y;
-    int isEater;
+    int isEaten;
 };
 
 
 
+void gen_food(struct Seg *Aseg, struct Food *fd, int len,int siz){
+    srand(time(NULL));
+    int fx = (rand() % siz);
+    int fy = (rand() % siz);
+    fd->x =fx;
+    fd->y = fy;
+    fd->isEaten = 0;
+    for(int i=0;i<len;i++){
+        if(Aseg[i].x == fy && Aseg[i].y == fx){
+            gen_food(Aseg, fd, len, siz);
+            return;
+        }
+    }
+}
 
-int main() {
+int is_eaten(struct Seg *Aseg, struct Food *fd, int len){
+    if(Aseg[len-1].x == fd->y && Aseg[len-1].y == fd->x){
+        fd->isEaten = 1;
+    }
+}
+
+
+
+
+int main() {//---------------------------------------------------------------------
     SetConsoleOutputCP(65001); // for emojis;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO curs_info;
@@ -55,9 +80,8 @@ int main() {
     int buf_sz = 3*sz*sz + sz +1;
     char key;
     
-    // int bx=0;
-    // int by = 0;
-
+   
+    //---Segments---
     struct Seg Arr_seg[sz*sz];
     int Arr_len_inUse = 3; 
     Arr_seg[0].key = key;
@@ -71,6 +95,12 @@ int main() {
     Arr_seg[2].key = key;
     Arr_seg[2].x = 0;
     Arr_seg[2].y = 2;
+
+    //----Food----
+    int fx = 0;
+    int fy = 0;
+    struct Food food = {0,0,0};
+    gen_food(Arr_seg, &food,Arr_len_inUse,sz);
     
 
     char *str= malloc(buf_sz);
@@ -85,7 +115,7 @@ int main() {
 
 
 
-
+//-----------------Movement of segments---------------
 
         for (int i = Arr_len_inUse - 1; i > 0; i--) {
             Arr_seg[i].x = Arr_seg[i - 1].x;
@@ -102,16 +132,8 @@ int main() {
         str[0] = '\0';
         char *pointr = str;
         
-        // if(key == 'w') by = by - 1; 
-        // if(key == 's') by = by + 1; 
-        // if(key == 'a') bx = bx - 1; 
-        // if(key == 'd') bx = bx + 1;
-
-        // if (bx < 0) bx = sz - 1;
-        // if (bx >= sz) bx = 0;
-        // if (by < 0) by = sz - 1;
-        // if (by >= sz) by = 0;
-        
+  
+//---------------------------- moving head----------------------------
         if(Arr_seg[0].key == 'w') Arr_seg[0].y = Arr_seg[0].y - 1; 
         if(Arr_seg[0].key == 's') Arr_seg[0].y = Arr_seg[0].y + 1; 
         if(Arr_seg[0].key == 'a') Arr_seg[0].x = Arr_seg[0].x - 1; 
@@ -120,28 +142,29 @@ int main() {
         if (Arr_seg[0].x >= sz) Arr_seg[0].x = 0;
         if (Arr_seg[0].y < 0) Arr_seg[0].y = sz - 1;
         if (Arr_seg[0].y >= sz) Arr_seg[0].y = 0;
+
+        if(food.isEaten){
+            create_seg(Arr_seg,&Arr_len_inUse,food.x,food.y);
+            gen_food(Arr_seg,&food,Arr_len_inUse,sz);
+        }
         
 
 
         if(key == '0')
             exitas = 1;
 
-
+//--------------------Buffering screen-----------------------
         
         for(int x =0;x<sz;x++){
             for(int y=0;y<sz;y++){
 
-                // if(bx==y && by==x){
-                //     strcpy(pointr,"\xE2\xAC\x9B");
-                //     pointr += 3;
-                // }else{
-                //     strcat(pointr,"\xE2\xAC\x9C");
-                //     pointr += 3;
-                // }
+      
                 if(disp_segs(Arr_seg,Arr_len_inUse,x,y)){
                     strcpy(pointr,"\xE2\xAC\x9B"); //
                     pointr += 3;
-
+                }else if(fx == x && fy == y){
+                    strcpy(pointr,"\xE2\xAD\x90");
+                    pointr += 3;
                 }else{
                     strcat(pointr,"\xE2\xAC\x9C");
                     pointr += 3;

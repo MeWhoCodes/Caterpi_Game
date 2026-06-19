@@ -73,7 +73,7 @@ int bit_body(struct Seg *Aseg, int len){
 
 
     int main() {//---------------------------------------------------------------------
-        int spd = 25;
+        int spd = 15;
         srand(time(NULL));
         SetConsoleOutputCP(65001); // for emojis;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -178,6 +178,7 @@ int bit_body(struct Seg *Aseg, int len){
                 create_seg(Arr_seg,&Arr_len_inUse,tailx,taily);
                 gen_food(Arr_seg, &food, Arr_len_inUse, sz);
                 food.isEaten = 0;
+                spd = spd*1.06;
             }
 
             
@@ -221,7 +222,7 @@ int bit_body(struct Seg *Aseg, int len){
         COORD end = {0,sz+1};
 
         SetConsoleCursorPosition(hConsole,MID);
-        printf("Game Over >.< (Score: %d)",(Arr_len_inUse-3)*1.5);
+        printf("Game Over >.<");
         SetConsoleCursorPosition(hConsole,end);
 
         curs_info.bVisible = TRUE;

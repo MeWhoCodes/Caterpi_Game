@@ -5,8 +5,8 @@
     #include <stdlib.h>
     #include <time.h>
 
-    #define spd 30
-    #define sz  45
+    #define spd 20
+    #define sz  20
 
     //-----------------------Segment struct and its related functions-----------------
 
@@ -36,7 +36,7 @@
         int x;
         int y;
         int isEaten;
-        int onTail;
+        // int onTail;
     };
 
 
@@ -61,13 +61,13 @@
             fd->isEaten = 1;
         }
     }
-    int is_eaten_tail(struct Seg *Aseg, struct Food *fd,int fxx, int fyy, int idx){
-        if(fxx == -1 && fyy == -1) return 0;
-        if(Aseg[idx].x == fyy && Aseg[idx].y == fxx){
-            fd->onTail = 1;
-        }
-        return 0;
-    }
+    // int is_eaten_tail(struct Seg *Aseg, struct Food *fd,int fxx, int fyy, int idx){
+    //     if(fxx == -1 && fyy == -1) return 0;
+    //     if(Aseg[idx].x == fyy && Aseg[idx].y == fxx){
+    //         fd->onTail = 1;
+    //     }
+    //     return 0;
+    // }
 
 
 
@@ -115,8 +115,8 @@
         char *str= malloc(buf_sz);
 
 
-        int fxx = -1;
-        int fyy = -1;
+        // int fxx = -1;
+        // int fyy = -1;
         while(!exitas){
             Sleep(1000/spd);
 
@@ -160,19 +160,20 @@
             is_eaten(Arr_seg, &food,0);
             
             if(food.isEaten){
-                fxx = food.x;
-                fyy = food.y;
+                int tailx = Arr_seg[Arr_len_inUse-1].x;
+                int taily = Arr_seg[Arr_len_inUse-1].y;
+                create_seg(Arr_seg,&Arr_len_inUse,tailx,taily);
                 gen_food(Arr_seg, &food, Arr_len_inUse, sz);
                 food.isEaten = 0;
             }
 
-            is_eaten_tail(Arr_seg, &food,fxx,fyy,Arr_len_inUse-1);
-            if(food.onTail){
-                create_seg(Arr_seg, &Arr_len_inUse, fyy,fxx);
-                food.onTail = 0;
-                fxx = -1;
-                fyy = -1;
-            }
+            // is_eaten_tail(Arr_seg, &food,fxx,fyy,Arr_len_inUse-1);
+            // if(food.onTail){
+            //     create_seg(Arr_seg, &Arr_len_inUse, fyy,fxx);
+            //     food.onTail = 0;
+            //     fxx = -1;
+            //     fyy = -1;
+            // }
             
 
 
@@ -203,7 +204,7 @@
             SetConsoleCursorPosition(hConsole,topLeft);
             fwrite(str,1,pointr-str,stdout);
             fflush(stdout);
-            printf("\nScore: ");
+            printf("\nScore: %d",Arr_len_inUse-2);
             
         }
 

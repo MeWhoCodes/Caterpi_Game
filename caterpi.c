@@ -5,8 +5,8 @@
     #include <stdlib.h>
     #include <time.h>
 
-    #define spd 20
-    #define sz  20
+    // #define spd 25
+    #define sz  30
 
     //-----------------------Segment struct and its related functions-----------------
 
@@ -61,18 +61,19 @@
             fd->isEaten = 1;
         }
     }
-    // int is_eaten_tail(struct Seg *Aseg, struct Food *fd,int fxx, int fyy, int idx){
-    //     if(fxx == -1 && fyy == -1) return 0;
-    //     if(Aseg[idx].x == fyy && Aseg[idx].y == fxx){
-    //         fd->onTail = 1;
-    //     }
-    //     return 0;
-    // }
-
+//-----------------Bit my own body test---------------------
+int bit_body(struct Seg *Aseg, int len){
+    for(int i=1;i<len;i++){
+        if(Aseg[0].x == Aseg[i].x && Aseg[0].y == Aseg[i].y) // head and a seg share same position(bit itself)
+            return 1;       
+    }
+    return 0;
+}
 
 
 
     int main() {//---------------------------------------------------------------------
+        int spd = 25;
         srand(time(NULL));
         SetConsoleOutputCP(65001); // for emojis;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -87,7 +88,7 @@
 
         int exitas = 0;
         int buf_sz = 3*sz*sz + sz +1;
-        char key;
+        char key = 'd';
         
     
         //---Segments---
@@ -133,7 +134,7 @@
                 Arr_seg[i].x = Arr_seg[i - 1].x;
                 Arr_seg[i].y = Arr_seg[i - 1].y;
             }
-            Arr_seg[0].key = key;
+            
 
 
 
@@ -146,10 +147,22 @@
             
     
     //---------------------------- moving head----------------------------
-            if(Arr_seg[0].key == 'w') Arr_seg[0].y = Arr_seg[0].y - 1; 
-            if(Arr_seg[0].key == 's') Arr_seg[0].y = Arr_seg[0].y + 1; 
-            if(Arr_seg[0].key == 'a') Arr_seg[0].x = Arr_seg[0].x - 1; 
+
+            if(key == 'w' && Arr_seg[0].key != 's')      Arr_seg[0].key = 'w';
+            else if(key == 's' && Arr_seg[0].key != 'w') Arr_seg[0].key = 's';
+            else if(key == 'a' && Arr_seg[0].key != 'd') Arr_seg[0].key = 'a';
+            else if(key == 'd' && Arr_seg[0].key != 'a') Arr_seg[0].key = 'd';
+            else {
+                key = Arr_seg[0].key; 
+            }        
+
+
+            if(Arr_seg[0].key == 'w') Arr_seg[0].y = Arr_seg[0].y - 1;
+            if(Arr_seg[0].key == 's') Arr_seg[0].y = Arr_seg[0].y + 1;
+            if(Arr_seg[0].key == 'a') Arr_seg[0].x = Arr_seg[0].x - 1;
             if(Arr_seg[0].key == 'd') Arr_seg[0].x = Arr_seg[0].x + 1;
+
+
             if (Arr_seg[0].x < 0) Arr_seg[0].x = sz - 1;
             if (Arr_seg[0].x >= sz) Arr_seg[0].x = 0;
             if (Arr_seg[0].y < 0) Arr_seg[0].y = sz - 1;
@@ -167,15 +180,10 @@
                 food.isEaten = 0;
             }
 
-            // is_eaten_tail(Arr_seg, &food,fxx,fyy,Arr_len_inUse-1);
-            // if(food.onTail){
-            //     create_seg(Arr_seg, &Arr_len_inUse, fyy,fxx);
-            //     food.onTail = 0;
-            //     fxx = -1;
-            //     fyy = -1;
-            // }
             
-
+            if(bit_body(Arr_seg,Arr_len_inUse)){
+                key = '0';
+            }
 
             if(key == '0')
                 exitas = 1;
@@ -204,11 +212,18 @@
             SetConsoleCursorPosition(hConsole,topLeft);
             fwrite(str,1,pointr-str,stdout);
             fflush(stdout);
-            printf("\nScore: %d",Arr_len_inUse-2);
+            // printf("\nScore: %d",Arr_len_inUse-2);
             
         }
+        int midx = sz/2;
+        int midy = sz/2;
+        COORD MID = {midx+3,midy-2};
+        COORD end = {0,sz+1};
 
-        
+        SetConsoleCursorPosition(hConsole,MID);
+        printf("Game Over >.< (Score: %d)",(Arr_len_inUse-3)*1.5);
+        SetConsoleCursorPosition(hConsole,end);
+
         curs_info.bVisible = TRUE;
         SetConsoleCursorInfo(hConsole,&curs_info);
         free(str);

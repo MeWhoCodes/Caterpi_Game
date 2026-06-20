@@ -73,7 +73,7 @@ int bit_body(struct Seg *Aseg, int len){
 
 
     int main() {//---------------------------------------------------------------------
-        int spd = 15;
+        int spd = 6;
         srand(time(NULL));
         SetConsoleOutputCP(65001); // for emojis;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

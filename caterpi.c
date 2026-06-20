@@ -6,7 +6,7 @@
     #include <time.h>
 
     // #define spd 25
-    #define sz  30
+    #define sz  40
 
     //-----------------------Segment struct and its related functions-----------------
 
@@ -73,7 +73,7 @@ int bit_body(struct Seg *Aseg, int len){
 
 
     int main() {//---------------------------------------------------------------------
-        int spd = 6;
+        float spd = 10;
         srand(time(NULL));
         SetConsoleOutputCP(65001); // for emojis;
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -178,7 +178,7 @@ int bit_body(struct Seg *Aseg, int len){
                 create_seg(Arr_seg,&Arr_len_inUse,tailx,taily);
                 gen_food(Arr_seg, &food, Arr_len_inUse, sz);
                 food.isEaten = 0;
-                spd = spd*1.06;
+                spd = spd*1.02;
             }
 
             
